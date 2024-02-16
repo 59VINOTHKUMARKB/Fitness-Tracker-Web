@@ -45,8 +45,9 @@
             </div>
         </div>
         <script>
-
+            // JavaScript functions here
     
+            // Initialize localStorage values
             if (!localStorage.getItem("fallHour")) {
                 localStorage.setItem("fallHour", 0);
             }
@@ -60,45 +61,56 @@
                 localStorage.setItem("wakeMinutes", 0);
             }
     
-        
+            // Function to store the fall asleep time in localStorage
 function setFallTime() {
     var fallHour = parseInt(document.getElementById("fall-hour").value);
     var fallMinutes = parseInt(document.getElementById("fall-minutes").value);
     var fallPeriod = document.getElementById("fall-seconds").value;
     
+    // Convert hour to 24-hour format if PM
     if (fallPeriod === "PM" && fallHour !== 12) {
         fallHour += 12;
     } else if (fallPeriod === "AM" && fallHour === 12) {
         fallHour = 0;
     }
     
+    // Store the fall asleep time in localStorage
     localStorage.setItem("fallHour", fallHour);
     localStorage.setItem("fallMinutes", fallMinutes);
 }
 
+// Function to store the wake up time in localStorage
 function setWakeTime() {
     var wakeHour = parseInt(document.getElementById("wake-hour").value);
     var wakeMinutes = parseInt(document.getElementById("wake-minutes").value);
     var wakePeriod = document.getElementById("wake-seconds").value;
     
+    // Convert hour to 24-hour format if PM
     if (wakePeriod === "PM" && wakeHour !== 12) {
         wakeHour += 12;
     } else if (wakePeriod === "AM" && wakeHour === 12) {
         wakeHour = 0;
     }
     
+    // Store the wake up time in localStorage
     localStorage.setItem("wakeHour", wakeHour);
     localStorage.setItem("wakeMinutes", wakeMinutes);
 }
 
-
+// Function to calculate and display the time difference
+// Function to calculate total hours slept
+// Function to calculate total hours slept and display sleep quality
 function calculateTotalHoursSlept() {
+    // Retrieve fall asleep and wake up times from localStorage
     var fallHour = parseInt(localStorage.getItem("fallHour"));
     var fallMinutes = parseInt(localStorage.getItem("fallMinutes"));
     var wakeHour = parseInt(localStorage.getItem("wakeHour"));
     var wakeMinutes = parseInt(localStorage.getItem("wakeMinutes"));
     
+    // Convert fall asleep time to minutes
     var fallTimeMinutes = fallHour * 60 + fallMinutes;
+    
+    // Convert wake up time to minutes
     var wakeTimeMinutes = wakeHour * 60 + wakeMinutes;
     
     // Calculate the total minutes slept
@@ -106,18 +118,26 @@ function calculateTotalHoursSlept() {
     if (wakeTimeMinutes >= fallTimeMinutes) {
         totalMinutesSlept = wakeTimeMinutes - fallTimeMinutes;
     } else {
-        
+        // If wake up time is before fall asleep time, add 24 hours
         totalMinutesSlept = (wakeTimeMinutes + (24 * 60)) - fallTimeMinutes;
     }
     
+    // Calculate total hours slept
     var totalHoursSlept = Math.floor(totalMinutesSlept / 60);
     
+    // Calculate remaining minutes
     var remainingMinutes = totalMinutesSlept % 60;
     
+    // Construct the total hours slept string
     var totalHoursSleptString = totalHoursSlept + " hours and " + remainingMinutes + " minutes";
     
+    // Update the display element with the total hours slept
     document.getElementById("total-hours-slept-display").innerText = "Total hours slept: " + totalHoursSleptString;
-
+    
+    // Add extra string based on the total hours slept
+    var sleepQuality;
+    if (totalHoursSlept >= 8 && totalHoursSlept <= 10) {
+        sleepQuality = "Good Sleep";
     } else if (totalHoursSlept >= 7 && totalHoursSlept < 8) {
         sleepQuality = "Good Sleep";
     } else if (totalHoursSlept >= 4 && totalHoursSlept < 7) {
@@ -128,11 +148,12 @@ function calculateTotalHoursSlept() {
         sleepQuality = "More than Normal Sleep Hours";
     }
     
+    // Update the display element with the sleep quality
     document.getElementById("sleep-quality-display").innerText = "\t\t\t\t"+sleepQuality;
 }
 
 
-    
+    // Update the display element with the calculated time difference
     </script>
     
     
